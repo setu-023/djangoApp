@@ -15,32 +15,36 @@ from item.models import Item
 def post_post(request):
     error_val = {}
     error_data= {}
+    rslt={}
 
     val    = len(request.data)
     count_valid_data   = 0
     count_invalid_data = 0
 #     Response(val)
-
+    info=1
     for info in range(val):
+
 
         serializer          =   ItemSerializer(data = request.data[info])
 
         if serializer.is_valid():
             serializer.save()
-            error_val  = serializer.errors
+            #error_val  = serializer.errors
             count_valid_data =  count_valid_data + 1
         else:
-            # count_invalid_data    = count_invalid_data + 1
-            error_val[info]      = serializer.errors
-            error_data[info]     = serializer.data
+            #error_val[info]      = [serializer.errors,info]
+            #error_data[info]     = [serializer.data,info]
+
+            rslt[info]           = {"number":info,"errors":serializer.errors,"data":serializer.data}
 
 
     result  =  { "success":count_valid_data, "failed": val - count_valid_data }
+    result1 =  {" ":error_val,"error_data":error_data}
 
 #return Response(result)
     #return Response({'response_code': '201', 'response': status.HTTP_201_CREATED, 'message': 'Created successfully', 'data': serializer.data})
     #return Response(error_data)
-    return Response({'response_code': '200', 'response': status.HTTP_201_CREATED, 'message': 'Successfully','data': result,'errors': error_data})
+    return Response({'response_code': '200', 'response': status.HTTP_201_CREATED, 'message': 'Successfully','data': [result,rslt] })
 
 
     # serializer = ItemSerializer(data=request.data, many=isinstance(request.data, list))
