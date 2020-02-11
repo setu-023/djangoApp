@@ -33,7 +33,11 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ),
 
-    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+
+    #'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
 }
 
 # Application definition
@@ -47,13 +51,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
-    #'rest_framework.authtoken',
+    'rest_framework.authtoken',
+    #'oauth_provider',
+
     'django_filters',
     'account',
 
 
     'inventory',
-    'item'
+    'item',
+    'user_profile'
 
 ]
 
@@ -103,14 +110,16 @@ DATABASES = {
 }
 
 REST_FRAMEWORK = {
+
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
 }
 
 AUTH_USER_MODEL = 'account.Account'
+#AUTH_USER_MODEL = 'user_profile.User_Profile'
 
 
 # Password validation

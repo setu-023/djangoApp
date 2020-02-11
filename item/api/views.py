@@ -6,7 +6,7 @@ from rest_framework import generics
 import datetime
 
 
-from django.db.models import Q
+#from django.db.models import Q
 from item.serializers import ItemSerializer,ItemStatusSerializer,ItemListSerializer
 from item.models import Item
 
@@ -15,55 +15,26 @@ from item.models import Item
 def post_post(request):
     error_val = {}
     error_data= {}
-    rslt={}
+    result_data={}
 
-    val    = len(request.data)
+#checking request length
+    request_len    = len(request.data)
     count_valid_data   = 0
-    count_invalid_data = 0
-#     Response(val)
-    info=1
-    for info in range(val):
 
+    for info in range(request_len):
 
         serializer          =   ItemSerializer(data = request.data[info])
 
         if serializer.is_valid():
             serializer.save()
-            #error_val  = serializer.errors
             count_valid_data =  count_valid_data + 1
         else:
-            #error_val[info]      = [serializer.errors,info]
-            #error_data[info]     = [serializer.data,info]
-
-            rslt[info]           = {"number":info,"errors":serializer.errors,"data":serializer.data}
+            result_data[info+1]           = {"errors":serializer.errors,"data":serializer.data}
 
 
-    result  =  { "success":count_valid_data, "failed": val - count_valid_data }
-    result1 =  {" ":error_val,"error_data":error_data}
+    result  =  { "success":count_valid_data, "failed": request_len - count_valid_data }
+    return Response({'response_code': '200', 'response': status.HTTP_201_CREATED, 'message': 'Successfully','data': [result,result_data] })
 
-#return Response(result)
-    #return Response({'response_code': '201', 'response': status.HTTP_201_CREATED, 'message': 'Created successfully', 'data': serializer.data})
-    #return Response(error_data)
-    return Response({'response_code': '200', 'response': status.HTTP_201_CREATED, 'message': 'Successfully','data': [result,rslt] })
-
-
-    # serializer = ItemSerializer(data=request.data, many=isinstance(request.data, list))
-    # serializer.is_valid(raise_exception=True)
-    # todo_created = []
-    # for list_elt in request.data:
-    #     todo_obj = Item.objects.create(**list_elt)
-    #     item_created.append(item_obj.id)
-    #
-    # return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
-# , 'message': 'Something went wrong', 'data': request.data, 'errors': serializer.errors})
-    #
-    # return Response(serializer.data, status=status.HTTP_201_CREATED)
-    # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    #
-    #
-    #return Response ({'data': serializer.data,'errors': serializer.errors})
 
 def store(request):
 
@@ -87,16 +58,6 @@ def bulk_insert(request):
 
     return Response({'response_code': '500', 'response': status.HTTP_500_INTERNAL_SERVER_ERROR
 , 'message': 'Something went wrong', 'data': request.data, 'errors': serializer.errors})
-
-
-# @api_view(['POST'])
-# def create(request, *args, **kwargs):
-#     many = isinstance(request.data, list)
-#     serializer = ItemSerializer(data=request.data, many=many)
-#     serializer.is_valid(raise_exception=True)
-#     self.perform_create(serializer)
-#     headers = self.get_success_headers(serializer.data)
-#     return Response(serializer.data, headers=headers)
 
 
 def index():
