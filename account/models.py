@@ -9,21 +9,16 @@ from rest_framework.authtoken.models import Token
 
 
 
-
 class MyAccountManager(BaseUserManager):
 	def create_user(self, email, username, password=None):
 		if not email:
 			raise ValueError('Users must have an email address')
 		if not username:
 			raise ValueError('Users must have a username')
-		# if not role:
-		# 	raise ValueError('Users must have a role')
 
 		user = self.model(
 			email=self.normalize_email(email),
 			username=username,
-			#role=role,
-
 		)
 
 		user.set_password(password)
@@ -42,14 +37,6 @@ class MyAccountManager(BaseUserManager):
 		user.save(using=self._db)
 		return user
 
-#
-# class Profile(AbstractBaseUser):
-# 		email 					= models.EmailField(verbose_name="email", max_length=60, unique=True)
-# 		username 				= models.CharField(max_length=30, unique=True)
-# 		role 					= models.CharField(max_length=30,)
-#
-# 		objects = MyAccountManager()
-#
 
 
 class Account(AbstractBaseUser):
