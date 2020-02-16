@@ -10,9 +10,7 @@ from rest_framework.decorators import api_view, permission_classes
 from account.api.serializers import RegistrationSerializer
 from rest_framework.authtoken.models import Token
 
-# Register
-# Response: https://gist.github.com/mitchtabian/c13c41fa0f51b304d7638b7bac7cb694
-# Url: https://<your-domain>/api/account/register
+
 
 @api_view(['POST', ])
 def registration_view(request):
@@ -33,10 +31,17 @@ def registration_view(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAdminUser])
+@permission_required('is_check')
+#@permission_classes([IsAuthenticated])
 def sample(self):
 
 	data={'msg':'hello'}
 
 	group_required = 'HR Admin1'
+	return Response(data)
+
+@api_view(['GET'])
+def homePage(self):
+
+	data={'msg':'Welcome to Homepage'}
 	return Response(data)

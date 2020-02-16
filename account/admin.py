@@ -16,7 +16,7 @@ class AccountAdmin(UserAdmin):
 	filter_horizontal = ()
 	list_filter = ()
 	fieldsets = (
-		('Permissions', {'fields': ('admin',)}),
+		('Permissions', {'fields': ('is_admin',)}),
 	)
 
 #

@@ -1,6 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
+from django.contrib.auth.decorators import permission_required
 
 from django_filters import rest_framework as filters
 from rest_framework import viewsets
@@ -14,6 +15,7 @@ from  item.api import views
 
 
 @api_view(['GET', 'POST'])
+@permission_required('is_check')
 def items(request):
 
     if request.method   ==  'POST':

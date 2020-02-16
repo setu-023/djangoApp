@@ -48,6 +48,8 @@ class Account(AbstractBaseUser):
 	is_active				= models.BooleanField(default=True)
 	is_staff				= models.BooleanField(default=False)
 	is_superuser			= models.BooleanField(default=False)
+	is_check				= models.BooleanField(default=True)
+
 
 	role 					= models.CharField(max_length=30, default='manager')
 	status					= models.IntegerField(default=1)
@@ -62,7 +64,11 @@ class Account(AbstractBaseUser):
 
 	# For checking permissions. to keep it simple all admin have ALL permissons
 	def has_perm(self, perm, obj=None):
-		return self.is_admin
+		return self.is_check
+
+	def has_perms(self, perm, obj=None):
+		return self.is_check
+
 
 	# Does this user have permission to view this app? (ALWAYS YES FOR SIMPLICITY)
 	def has_module_perms(self, app_label):

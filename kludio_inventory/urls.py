@@ -28,7 +28,7 @@ urlpatterns = [
     path('api/items', include ('item.urls')),
 	path('register', views.registration_view),
 	path('sample', views.sample), # -> see accounts/api/views.py for response and url info
-    path('login', obtain_auth_token, name="login"),
+    path('accounts/login/', views.homePage),
 
 
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
