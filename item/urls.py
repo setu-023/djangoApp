@@ -7,6 +7,7 @@ from item.api import filter_view
 
 urlpatterns = [
 
+
     path('/', views.items),
     path('/<int:pk>', views.item),
     path('/<int:pk>/status', api.views.status_update),

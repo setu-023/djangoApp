@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from django_filters import rest_framework as filters
 from rest_framework import generics
 import datetime
+from django.contrib.auth.decorators import permission_required
+
 
 
 #from django.db.models import Q
@@ -35,7 +37,7 @@ def post_post(request):
     result  =  { "success":count_valid_data, "failed": request_len - count_valid_data }
     return Response({'response_code': '200', 'response': status.HTTP_201_CREATED, 'message': 'Successfully','data': [result,result_data] })
 
-
+#@permission_required('is_role')
 def store(request):
 
     serializer          =   ItemSerializer(data = request.data)
@@ -60,7 +62,8 @@ def bulk_insert(request):
 , 'message': 'Something went wrong', 'data': request.data, 'errors': serializer.errors})
 
 
-def index():
+#@permission_required('is_check')
+def index(request):
 
     try:
         get_all_items   =   Item.objects.all()
@@ -94,7 +97,7 @@ def update(request,pk):
 
     try:
         get_item        =   Item.objects.get(pk = pk)
-    except Items.DoesNotExist:
+    except Item.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
 
 
@@ -109,7 +112,7 @@ def update(request,pk):
     , 'message': 'Something went wrong', 'data': request.data, 'errors': serializer.errors})
 
 
-@api_view(['PUT'])
+#@api_view(['PUT'])
 def item_delete(request, pk):
 
     if request.method   ==   'PUT':

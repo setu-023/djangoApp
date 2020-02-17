@@ -4,6 +4,8 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
+from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 
 
@@ -49,9 +51,12 @@ class Account(AbstractBaseUser):
 	is_staff				= models.BooleanField(default=False)
 	is_superuser			= models.BooleanField(default=False)
 	is_check				= models.BooleanField(default=True)
+	is_manager				= models.BooleanField(default=True)
+	is_ceo					= models.BooleanField(default=True)
 
 
-	role 					= models.CharField(max_length=30, default='manager')
+
+	is_role 				= models.BooleanField(default=True)
 	status					= models.IntegerField(default=1)
 
 	USERNAME_FIELD = 'email'
@@ -64,10 +69,22 @@ class Account(AbstractBaseUser):
 
 	# For checking permissions. to keep it simple all admin have ALL permissons
 	def has_perm(self, perm, obj=None):
-		return self.is_check
+		return Response (perm)
 
-	def has_perms(self, perm, obj=None):
-		return self.is_check
+		return ( self.is_active )
+
+	# def has_perms(self, perm, obj=None):
+	#
+	# 	return Response (perm)
+	# 	if perm == 'is_role':
+	# 		return self.is_role
+	# 	if perm == 'is_check':
+	# 		return self.is_check
+
+
+	#
+	# def has_perms(self, perms, obj=None):
+	# 	return self.is_role
 
 
 	# Does this user have permission to view this app? (ALWAYS YES FOR SIMPLICITY)
